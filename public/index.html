@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Chat Socket</title>
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font: 13px Helvetica, Arial; }
+    .chat-bottom { background: #607D8B; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      .text-chat{
+        width: 90%;
+        border: 0;
+        border-radius: 0px;
+        padding: 10px;
+      }
+
+      .chat-button{
+        width: 9%;
+        padding: 10px;
+        border: 0;
+        background: #FF7043;
+      }
+      .left-panel{
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="messages">
+
+    </ul>
+  <div class="">
+    <form class="chat-bottom" action="" >
+      <input type="text" class="text-chat" autocomplete="off" id="message">
+      <button type="button" class="chat-button">Send</button>
+    </form>
+  </div>
+
+
+
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+    $(function () {
+        var socket = io();
+        $('form').submit(function () {
+          socket.emit('send message', $('#message').val())
+          $('#message').val('');
+          return false;
+        })
+        socket.on('send message', function (data) {
+          var $li = $('<li>');
+
+          $li.text(data);
+          // $li.hide();
+          $li.on('click', function () {
+              $li.show();
+              console.log('clicked');
+          })
+          $('#messages').append($li);
+        })
+    })
+    </script>
+  </body>
+</html>
